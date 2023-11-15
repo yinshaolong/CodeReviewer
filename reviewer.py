@@ -47,14 +47,16 @@ def generate_code_review():
         print(message, end="", flush=True)
         with open("review.txt", "a") as f:
             f.write(message) if message != None else f.write("")
-            messages.append(message)
-    return messages
+            messages.append(message) if message != None else f.write("")
+    return "".join(messages)
 
 def generate_reviewed_code(messages):
     args = parse_args()
+
     closing_index = messages.rfind("```")
     opening_index = messages.index("```")
     reviewed_code = messages[opening_index + 3:closing_index]
+    reviewed_code = reviewed_code[reviewed_code.index("\n") + 1:]
     file_path = os.path.abspath(args.f)
     file_name, file_extension = os.path.splitext(file_path)
 
