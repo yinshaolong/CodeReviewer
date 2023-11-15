@@ -43,28 +43,33 @@ def generate_code_review():
     messages = []
     with open("review.txt", "w") as f:
         f.write('')
+    file_name = get_file_details()[0]
     for message in reply:
         print(message, end="", flush=True)
-        with open("review.txt", "a") as f:
+        with open(f"{file_name}_critique.txt", "a") as f:
             f.write(message) if message != None else f.write("")
             messages.append(message) if message != None else f.write("")
     return "".join(messages)
 
+def get_file_details(file = parse_args().f):
+    file_path = os.path.abspath(file)
+    return os.path.splitext(file_path)
+
 def generate_reviewed_code(messages):
     args = parse_args()
-
-    closing_index = messages.rfind("```")
+    #gets first and last index
     opening_index = messages.index("```")
+    closing_index = messages.rfind("```")
     reviewed_code = messages[opening_index + 3:closing_index]
+    #removes the first line of the code, in this case the codes respective language
     reviewed_code = reviewed_code[reviewed_code.index("\n") + 1:]
-    file_path = os.path.abspath(args.f)
-    file_name, file_extension = os.path.splitext(file_path)
-
+    print("reviewed code: ",reviewed_code)
+    #gets the matching file extension so that it can be used to create a new file
+    file_name, file_extension = get_file_details()
     with open(f"{file_name}_reviewed{file_extension}", "w") as f:
         f.write(reviewed_code)
 def main():
     messages = generate_code_review()
     generate_reviewed_code(messages)
-    print(messages)
 if __name__ == "__main__":
     main()
