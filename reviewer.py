@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument("-m", default = '3',type=str, help="determines the gpt model the user would like to use")
     parser.add_argument("-f", default = "failing_code.js", type=str, help="determines the file the user would like to review")
     parser.add_argument("-p", default = False, type=bool, help="determines the prompt the user would like to use")
-    return parser.parse_args()
+    return parser
 
 def get_file_contents(file):
     prompt_string = ['"""']
