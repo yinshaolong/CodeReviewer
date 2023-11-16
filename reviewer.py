@@ -23,7 +23,7 @@ def get_file_contents(file):
         prompt_string.append(f.read())
         if parse_args().p != False:
             print("in parse")
-            prompt_string.append("The generated code should be a single list of dictionaries. The key to each dictionary is the original line of code. The value is the generated line of code. e.g. [{'add(a, b):\n   return a *b': 'add(operand1, operand2):\n   return operand1 + operand2'}]")
+            prompt_string.append("""The generated code should be a single list of dictionaries. The key to each dictionary is the original line of code. The value is the generated line of code. e.g. [{'add(a, b):\n   return a *b': 'add(operand1, operand2):\n   return operand1 + operand2'}], [{'    console.log(add("3", "four"))}': '    console.log(addNumbers(parseInt("3"), parseInt("4")));'}]""")
     prompt_string.append('"""')
     return "".join(prompt_string)
 
