@@ -1,3 +1,10 @@
 .env
 review.txt
 basic_code.py
+.gitignore
+chatbot_critique.txt
+chatbot_reviewed1.js
+convert_to_js_prompt.txt
+failing_code_reviewed1.js
+node_reviewed_code_critique.txt
+node_reviewed_code.js

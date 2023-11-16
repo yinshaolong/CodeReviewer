@@ -11,15 +11,19 @@ client = openai.OpenAI()
 model = {3: "gpt-3.5-turbo", 4: "gpt-4-1106-preview"}
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Conversation with a chatbot")
+    parser = argparse.ArgumentParser(description="Simple code reviwer for a file")
     parser.add_argument("-m", default = '3',type=str, help="determines the gpt model the user would like to use")
-    parser.add_argument("-f", default = "node_reviewed_code.js", type=str, help="determines the file the user would like to review")
+    parser.add_argument("-f", default = "failing_code.js", type=str, help="determines the file the user would like to review")
+    parser.add_argument("-p", default = False, type=bool, help="determines the prompt the user would like to use")
     return parser.parse_args()
 
 def get_file_contents(file):
     prompt_string = ['"""']
     with open(file, "r") as f:
         prompt_string.append(f.read())
+        if parse_args().p != False:
+            print("in parse")
+            prompt_string.append("The generated code should be a single list of dictionaries. The key to each dictionary is the original line of code. The value is the generated line of code. e.g. [{'add(a, b):\n   return a *b': 'add(operand1, operand2):\n   return operand1 + operand2'}]")
     prompt_string.append('"""')
     return "".join(prompt_string)
 
@@ -68,8 +72,11 @@ def generate_reviewed_code(messages):
     file_name, file_extension = get_file_details()
     with open(f"{file_name}_reviewed{file_extension}", "w") as f:
         f.write(reviewed_code)
+
+
 def main():
     messages = generate_code_review()
     generate_reviewed_code(messages)
+
 if __name__ == "__main__":
     main()
